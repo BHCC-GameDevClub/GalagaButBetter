@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1201658393034761551}
   - component: {fileID: 4224659563870331295}
   - component: {fileID: -8004768794383360244}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightRocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Rockets
   lifespawn: 2
   speed: 20
+  damage: 1
 --- !u!54 &4224659563870331295
 Rigidbody:
   m_ObjectHideFlags: 0

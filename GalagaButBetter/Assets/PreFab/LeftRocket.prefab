@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8278554788150427292}
   - component: {fileID: -7646805335033380156}
   - component: {fileID: 7871515551971868569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftRocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::rockets
   lifespawn: 2
   speed: 20
+  damage: 1
 --- !u!54 &-7646805335033380156
 Rigidbody:
   m_ObjectHideFlags: 0

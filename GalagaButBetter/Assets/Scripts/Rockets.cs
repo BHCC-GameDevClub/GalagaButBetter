@@ -10,14 +10,15 @@ public class Rockets : MonoBehaviour
     public float lifespawn = 2f;
     public float speed;
     private Rigidbody rb; // keep private
+    public int damage = 1; // rocket damage
 
-void Awake()
+    void Awake()
     {
         // Get the Rigidbody component on same object
         rb = GetComponent<Rigidbody>();
     }
 
-public void Launch(Vector3 direction)
+    public void Launch(Vector3 direction)
     {
         // Leave Y 0 to ensure rocket only goes X-Z planes
         Vector3 flatDirection = new Vector3(direction.x, 0, direction.z).normalized;
@@ -35,5 +36,15 @@ public void Launch(Vector3 direction)
         // Keep rockets from going up or down Y
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         Destroy(gameObject, lifespawn);
+    }
+
+    private void OnCollisionEnter(Collision collision) // collision needed for damage output
+    {
+        Enemy_Health enemyHealth = collision.gameObject.GetComponent<Enemy_Health>();
+        if (enemyHealth != null)
+        {
+            enemyHealth.ChangeHealth(damage);
+        }
+        Destroy(gameObject);
     }
 }
