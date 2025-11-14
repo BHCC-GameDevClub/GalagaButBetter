@@ -16,11 +16,11 @@ public class PlayerHealth : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+       /* if (Input.GetKeyDown(KeyCode.G))
         {
             Debug.Log("G key pressed. dleaing 1 test damage.");
             ChangeHealth(1);
-        }
+        } */
     }
 
     public void ChangeHealth(int amount)
