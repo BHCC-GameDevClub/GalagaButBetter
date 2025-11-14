@@ -10,12 +10,9 @@ public class PlayerAttack : MonoBehaviour
     public int damage = 1;
     public Transform LaunchPoint;
     public Transform LaunchPoint2;
-    public GameObject LeftRocketPrefab;
-    public GameObject RightRocketPrefab;
-    private Vector2 aimDirection = Vector2.right;
+    public GameObject RocketPrefab;
     public float shootCooldown = .5f;
     private float shootTimer;
-    public Camera MainCamera;
 
     void OnDrawGizmosSelected()
     {
@@ -29,14 +26,13 @@ public class PlayerAttack : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(LaunchPoint2.position, weaponRange);
-    }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         shootTimer -= Time.deltaTime;
-        HandleAiming();
 
         if (Input.GetButtonDown("Shoot") && shootTimer <= 0)
         {
@@ -44,7 +40,10 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void HandleAiming()
+
+    //THIS IS CODE FOR AIMING WHEN TOP DOWN - DO NOT REMOVE
+
+    /* private void HandleAiming()
     {
         // Mouse position on screen
         Vector3 mouseScreenPosition = Input.mousePosition;
@@ -66,24 +65,22 @@ public class PlayerAttack : MonoBehaviour
             // direction from player to target point
             Vector3 direction = targetPoint - transform.position;
             aimDirection = new Vector2(direction.x, direction.z).normalized;
-        }
-        }
+        } */
+
 
     public void Shoot()
     {
         Debug.Log("Shoot method called!"); // debug log for shooting
-        if (aimDirection == Vector2.zero)
-        {
-            // Mouseover player will default to direction
-            aimDirection = new Vector2(transform.forward.x, transform.forward.z);
-        }
-        Rockets rocketL = Instantiate(LeftRocketPrefab, LaunchPoint.position, Quaternion.identity).GetComponent<Rockets>();
-        Rockets rocketR = Instantiate(RightRocketPrefab, LaunchPoint2.position, Quaternion.identity).GetComponent<Rockets>();
+        Vector3 launchDirection = transform.up;
+      
+        Rockets rocketL = Instantiate(RocketPrefab, LaunchPoint.position, Quaternion.identity).GetComponent<Rockets>();
+        Rockets rocketR = Instantiate(RocketPrefab, LaunchPoint2.position, Quaternion.identity).GetComponent<Rockets>();
 
         // launch method for both rockets
-        rocketL.Launch(new Vector3(aimDirection.x, 0, aimDirection.y));
-        rocketR.Launch(new Vector3(aimDirection.x, 0, aimDirection.y));
+        rocketL.Launch(launchDirection);
+        rocketR.Launch(launchDirection);
 
+        // CloseRange Component
         List<Collider> detectedEnemies = new List<Collider>(); //collider list
         detectedEnemies.AddRange(Physics.OverlapSphere(LaunchPoint.position, weaponRange, enemyLayer));
         detectedEnemies.AddRange(Physics.OverlapSphere(LaunchPoint2.position, weaponRange, enemyLayer));

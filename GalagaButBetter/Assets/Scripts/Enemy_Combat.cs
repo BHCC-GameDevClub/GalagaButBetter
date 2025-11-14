@@ -10,7 +10,7 @@ public class Enemy_Combat : MonoBehaviour
         PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
-            playerHealth.ChangeHealth(-damage);
+            playerHealth.ChangeHealth(damage);
         }
         //collision.gameObject.GetComponent<PlayerHealth>().ChangeHealth(-damage);
     }

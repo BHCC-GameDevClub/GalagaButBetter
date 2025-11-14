@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    private Quaternion xAxisRotation;
     public float speed; // speed of character
     private Vector2 move, mouseLook, joystickLook; // store input values
     private Vector3 rotationTarget; // Point allowing look towards mouse position
@@ -31,8 +32,7 @@ public void OnJoystickLook(InputAction.CallbackContext context)
 // Start is called before the first frame update
 void Start()
     {
-        // Keeps the sprite rotated 90 degrees on X
-        xAxisRotation = Quaternion.Euler(90, 0, 0);
+     
     }
 
 // Update is called once per frame
@@ -40,13 +40,9 @@ void Update()
     {
         if (isPc) // Checks for Gamepad controller if and else
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(mouseLook);
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                rotationTarget = hit.point; // gives us vector3 to position
-            }
+            Vector3 mouseScreenPos = mouseLook; // mouse is now world position
+            mouseScreenPos.z = Camera.main.nearClipPlane + 10f; // Z value is distance from camera to point
+            rotationTarget = Camera.main.ScreenToWorldPoint(mouseScreenPos);
 
             movePlayerWithAim();
         }
@@ -67,52 +63,36 @@ void Update()
 
 public void movePlayer()  // WASD/LTS action input for movement
     {
-        Vector3 movement = new Vector3(move.x, 0f, move.y); // Not moving on the Y axis leave 0f
-
-        if (movement != Vector3.zero) // stops snapping to start position
-        {
-            // Gets horizontal rotation
-            Quaternion horizontalRotation = Quaternion.LookRotation(movement);
-
-            // Combines the rotations with frozen x rotation
-            transform.rotation = Quaternion.Slerp(transform.rotation, horizontalRotation * xAxisRotation, 0.15f); // 0.15f is speed
-        }
-
-
+        Vector3 movement = new Vector3(move.x, move.y, 0f); // Not moving on the Z axis leave 0f
         transform.Translate(movement * speed * Time.deltaTime, Space.World); // Allows character to move to directed point
     }
 
 public void movePlayerWithAim()
     {
+
         if (isPc) //Check for PC or controller
         {
-            var lookPos = rotationTarget - transform.position;
-            lookPos.y = 0;
-            var horizontalRotation = Quaternion.LookRotation(lookPos);
-
-            Vector3 aimDirection = new Vector3(rotationTarget.x, 0f, rotationTarget.z);
-
-            if (aimDirection != Vector3.zero)
+            Vector3 aimDirection = (rotationTarget - transform.position);
+            if (aimDirection.sqrMagnitude > 0.01f) // tiny deadzone on mouse so it doesnt snap
             {
-                // Combines the rotation with frozen x rotation
-                transform.rotation = Quaternion.Slerp(transform.rotation, horizontalRotation * xAxisRotation, 0.15f);
+                float angle = (Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg) - 90f;
+                Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
+                transform.rotation = targetRotation;
             }
         }
         else
         {
-            Vector3 aimDirection = new Vector3(joystickLook.x, 0f, joystickLook.y);
+            Vector3 aimDirection = new Vector3(joystickLook.x, joystickLook.y, 0f);
 
-            if (aimDirection != Vector3.zero)
+            if (aimDirection.sqrMagnitude > 0.01f)
             {
-                // gets horizontal rotation
-                Quaternion horizontalRotation = Quaternion.LookRotation(aimDirection);
-
-                // COmbines the rotation with frozen x
-                transform.rotation = Quaternion.Slerp(transform.rotation, horizontalRotation * xAxisRotation, 0.15f);
+                float angle = (Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg) - 90f;
+                Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.15f);
             }
         }
 
-        Vector3 movement = new Vector3(move.x, 0f, move.y);
+        Vector3 movement = new Vector3(move.x, move.y, 0f);
         transform.Translate(movement * speed * Time.deltaTime, Space.World);
     }
 
