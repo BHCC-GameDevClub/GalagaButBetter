@@ -6,6 +6,9 @@ public class Enemy_Health : MonoBehaviour
     public int currentHealth;
     public int maxHealth;
 
+    [Tooltip("How many points this enemy is worth")]
+    public int pointsOnDeath = 100;
+
 
     private void Start()
     {
@@ -19,10 +22,12 @@ public class Enemy_Health : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            GameManager.Instance.AddScore(pointsOnDeath);
+            
             Destroy(gameObject);
         }
     }
-
-
-
 }
+
+
+

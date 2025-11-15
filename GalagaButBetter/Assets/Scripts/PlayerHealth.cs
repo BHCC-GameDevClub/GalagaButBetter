@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEditor.Build.Content;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -31,7 +32,12 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            gameObject.SetActive(false);    
+            GameManager.Instance.PlayerDied();
         }
+    }
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }
