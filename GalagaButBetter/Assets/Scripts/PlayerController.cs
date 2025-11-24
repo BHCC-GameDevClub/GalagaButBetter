@@ -58,6 +58,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
+        
         if (isPc) // Checks for Gamepad controller if and else
         {
             Vector3 mouseScreenPos = mouseLook; // mouse is now world position
