@@ -9,7 +9,6 @@ public class PlayerAttack : MonoBehaviour
     public LayerMask enemyLayer;
     public int damage = 1;
     public Transform LaunchPoint;
-    public Transform LaunchPoint2;
     public GameObject RocketPrefab;
     public float shootCooldown = .5f;
     private float shootTimer;
@@ -20,12 +19,6 @@ public class PlayerAttack : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(LaunchPoint.position, weaponRange);
-        }
-
-        if (LaunchPoint2 != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(LaunchPoint2.position, weaponRange);
         }
     }
 
@@ -70,22 +63,18 @@ public class PlayerAttack : MonoBehaviour
 
     public void Shoot()
     {
-        Debug.Log("Shoot method called!"); // debug log for shooting
-        Vector3 launchDirection = transform.up;
-      
-        Rockets rocketL = Instantiate(RocketPrefab, LaunchPoint.position, Quaternion.identity).GetComponent<Rockets>();
-        Rockets rocketR = Instantiate(RocketPrefab, LaunchPoint2.position, Quaternion.identity).GetComponent<Rockets>();
+       Debug.Log("Shoot method call");
+       
+       Vector3 launchDirection = Vector3.right; // Fixed shooting position
+       Rockets rocket = Instantiate(RocketPrefab, LaunchPoint.position, Quaternion.identity).GetComponent<Rockets>();
 
-        // launch method for both rockets
-        rocketL.Launch(launchDirection);
-        rocketR.Launch(launchDirection);
+       rocket.Launch(launchDirection); // Launch Method
+       
+       List<Collider> detectedEnemies = new List<Collider>();
+       detectedEnemies.AddRange(Physics.OverlapSphere(LaunchPoint.position, weaponRange, enemyLayer));
 
-        // CloseRange Component
-        List<Collider> detectedEnemies = new List<Collider>(); //collider list
-        detectedEnemies.AddRange(Physics.OverlapSphere(LaunchPoint.position, weaponRange, enemyLayer));
-        detectedEnemies.AddRange(Physics.OverlapSphere(LaunchPoint2.position, weaponRange, enemyLayer));
-        Collider[] enemies = detectedEnemies.ToArray(); // List into array just incase
-        foreach (Collider enemyCollider in detectedEnemies)
+       Collider[] enemies = detectedEnemies.ToArray();
+       foreach (Collider enemyCollider in detectedEnemies)
         {
             Enemy_Health enemyHealth = enemyCollider.GetComponent<Enemy_Health>();
             if (enemyHealth != null)
@@ -93,11 +82,6 @@ public class PlayerAttack : MonoBehaviour
                 enemyHealth.ChangeHealth(damage);
             }
         }
-
-            // Collider[] enemies = Physics.OverlapSphere(LaunchPoint.position, weaponRange, enemyLayer);
-            // Collider[] enemies2 = Physics.OverlapSphere(LaunchPoint2.position, weaponRange, enemyLayer);
-
-
-            shootTimer = shootCooldown;
+        shootTimer = shootCooldown;
     }
 }

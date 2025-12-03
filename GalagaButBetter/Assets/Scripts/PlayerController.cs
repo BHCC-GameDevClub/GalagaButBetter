@@ -9,9 +9,11 @@ using UnityEngine.InputSystem;
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    public float speed; // speed of character
-    private Vector2 move, mouseLook, joystickLook; // store input values
-    private Vector3 rotationTarget; // Point allowing look towards mouse position
+    private Rigidbody rb;
+    [Header("Constant Movement")]
+    public float baseForwardSpeed = 2.5f; // idle speed
+    public float speed = 5f; // speed of character
+    private Vector2 move; // store input values
     public bool isPc; // Checks for Gamepad or M&K
 
     // Dash Variabls & Event
@@ -19,9 +21,16 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 20f;
     public float dashDuration = 0.02f;
     public float dashCooldown = 2f;
-
+    [Header("Collision Settings")]
+    public LayerMask dashStopLayer;
     private bool isDashing = false;
     private bool canDash = true;
+
+    // Camera
+    [Header("Boundaries")]
+    public Camera mainCamera; // Main camera component
+    public float leftBoundaryBuffer = 1.0f; // Left screen limiter
+
 
     public static event Action<bool> OnDashStateChanged;
 
@@ -31,15 +40,6 @@ public class PlayerController : MonoBehaviour
         move = context.ReadValue<Vector2>();
     }
 
-    public void OnMouseLook(InputAction.CallbackContext context)
-    {
-        mouseLook = context.ReadValue<Vector2>();
-    }
-
-    public void OnJoystickLook(InputAction.CallbackContext context)
-    {
-        joystickLook = context.ReadValue<Vector2>();
-    }
 
     public void OnDash(InputAction.CallbackContext context)
     {
@@ -52,99 +52,90 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        transform.rotation = Quaternion.identity; // Rotation 0
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            Debug.LogError("Player needs rigidbody");
+            enabled = false;
+            return;
+
+        }
+        rb.constraints |= RigidbodyConstraints.FreezeRotation;
+        
         OnDashStateChanged?.Invoke(true); // broadcast to UI at start
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (PauseMenu.GameIsPaused)
         {
+            rb.linearVelocity = UnityEngine.Vector3.zero;
             return;
         }
-        
-        if (isPc) // Checks for Gamepad controller if and else
+        if (isDashing)
         {
-            Vector3 mouseScreenPos = mouseLook; // mouse is now world position
-            mouseScreenPos.z = Camera.main.nearClipPlane + 10f; // Z value is distance from camera to point
-            rotationTarget = Camera.main.ScreenToWorldPoint(mouseScreenPos);
-
-            movePlayerWithAim();
+            return;
         }
-        else
+        movePlayer();
+
+    // Left Boundary
+        if (mainCamera != null)
         {
-            if (joystickLook.x == 0 && joystickLook.y == 0) // Makes sure Joysticks stay seperate and only mvoement from left
+            CapsuleCollider playerCollider = GetComponent<CapsuleCollider>();
+            if (playerCollider == null)
             {
-                movePlayer();
+                Debug.LogError("missing CapsuleCollider Component");
+                return;
             }
-            else
-            {
-                movePlayerWithAim();
-            }
-        }
+            float playerZDepth = transform.position.z;
+            Vector3 leftEdgeWorld = mainCamera.ViewportToWorldPoint(new Vector3(0f, 0.5f, playerZDepth));
+            float minPlayerX = leftEdgeWorld.x;
+            float clampedX= Mathf.Max(transform.position.x, minPlayerX);
 
-
+/*           float cameraHalfHeight = mainCamera.orthographicSize;
+           float cameraHalfWidth = cameraHalfHeight * mainCamera.aspect;
+           float leftCameraEdgeX = mainCamera.transform.position.x - cameraHalfWidth;
+           float minPlayerX = leftCameraEdgeX;
+           float clampedX = Mathf.Max(transform.position.x, minPlayerX); */
+           transform.position = new Vector3(
+            clampedX,
+            transform.position.y,
+            transform.position.z
+           );
+        } 
+        // Debug for camera boundary
+         //Debug.Log($"Cam X: {mainCamera.transform.position.x}, Half Width: {cameraHalfWidth}, Min X: {minPlayerX}");
     }
 
-    public void movePlayer()  // WASD/LTS action input for movement
-    {
-        if (isDashing) return; // Locked in dash
-        Vector3 movement = new Vector3(move.x, move.y, 0f); // Not moving on the Z axis leave 0f
-        transform.Translate(movement * speed * Time.deltaTime, Space.World); // Allows character to move to directed point
-    }
-
-    public void movePlayerWithAim()
-    {
-        if (isDashing) return; // Locked in dash
-        if (isPc) //Check for PC or controller
-        {
-            Vector3 aimDirection = (rotationTarget - transform.position);
-            if (aimDirection.sqrMagnitude > 0.01f) // tiny deadzone on mouse so it doesnt snap
-            {
-                float angle = (Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg) - 90f;
-                Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
-                transform.rotation = targetRotation;
-            }
-        }
-        else
-        {
-            Vector3 aimDirection = new Vector3(joystickLook.x, joystickLook.y, 0f);
-
-            if (aimDirection.sqrMagnitude > 0.01f)
-            {
-                float angle = (Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg) - 90f;
-                Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.15f);
-            }
-        }
-
-        Vector3 movement = new Vector3(move.x, move.y, 0f);
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+    public void movePlayer()  // WASD/LTS input for movement
+    {   
+        Vector3 inputMovement = new UnityEngine.Vector3(move.x, move.y, 0f) * speed;
+        Vector3 forwardMovement = UnityEngine.Vector3.right * baseForwardSpeed; // constant movement to right
+        Vector3 netDesiredVelocity = forwardMovement + inputMovement;
+        rb.linearVelocity = netDesiredVelocity;
     }
 
     private IEnumerator DashCoroutine()
     {   // Dash Start
         canDash = false;
         isDashing = true;
-        OnDashStateChanged?.Invoke(false); // broadcast to UI dash on Cooldown
+        OnDashStateChanged?.Invoke(false); // dash broadcast to UI Cooldown
 
         Vector3 dashDirection;
         if (move.sqrMagnitude > 0.01f)
         {
-            dashDirection = new Vector3(move.x, move.y, 0f).normalized; // direction dash
+            dashDirection = new UnityEngine.Vector3(move.x, move.y, 0f).normalized; // direction dash
         }
         else
         {
-            dashDirection = transform.up; // idle dash where facing
+            dashDirection = transform.right; // idle dash where facing
         }
-
-        float dashStartTime = Time.time;
-        while (Time.time < dashStartTime + dashDuration)
-        {
-            transform.Translate(dashDirection * dashSpeed * Time.deltaTime, Space.World);
-            yield return null;
-        }
-
+        
+        rb.linearVelocity = dashDirection * dashSpeed;
+        yield return new WaitForSeconds(dashDuration);
+        
         // Dash End & Cooldowns
         isDashing = false;
 
@@ -152,6 +143,11 @@ public class PlayerController : MonoBehaviour
 
         canDash = true;
         OnDashStateChanged?.Invoke(true); // Broadcast to UI dash ready
+    }
+
+    public Vector2 GetMoveInput()
+    {
+        return move;
     }
         
 }
