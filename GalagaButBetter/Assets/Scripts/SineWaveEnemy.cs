@@ -8,7 +8,7 @@ public class SineWaveEnemy : MonoBehaviour
     
     private Vector3 startPosition;
     private float timeCounter = 0f;
-    
+    private float leftbound = -60;
     void Start()
     {
         startPosition = transform.position;
@@ -29,6 +29,11 @@ public class SineWaveEnemy : MonoBehaviour
             startPosition.z
         );
         
+        if (transform.position.x <= leftbound)
+        {
+            Destroy(gameObject);
+        }
+
         transform.position = newPosition;
     }
 
