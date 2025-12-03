@@ -2740,6 +2740,12 @@ MonoBehaviour:
   enemyList:
   - enemyOnePrefab: {fileID: 3324024107681944387, guid: f42850ab23ca24543bf9606b158a9afc, type: 3}
     spawnInterval: 1
+    spawnEnemys: 1
+    spawnBoundsMin: {x: -30, y: 0}
+    spawnBoundsMax: {x: 30, y: 80}
+  - enemyOnePrefab: {fileID: 3324024107681944387, guid: ba3458efe0c1c584a86952b8918100d4, type: 3}
+    spawnInterval: 1
+    spawnEnemys: 1
     spawnBoundsMin: {x: -30, y: 0}
     spawnBoundsMax: {x: 30, y: 80}
 --- !u!4 &1693627778
