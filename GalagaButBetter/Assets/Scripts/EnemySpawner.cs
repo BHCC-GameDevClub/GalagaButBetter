@@ -43,8 +43,8 @@ public class EnemySpawnConfig
             yield return new WaitForSeconds(config.spawnInterval);
 
             // randomizaed spawn points
-            float spawnX = Random.Range(config.spawnBoundsMin.x, config.spawnBoundsMax.x);
-            float spawnY = Random.Range(config.spawnBoundsMin.y, config.spawnBoundsMax.y);
+            float spawnX = Random.Range(transform.position.x - config.spawnBoundsMin.x, transform.position.x + config.spawnBoundsMax.x);
+            float spawnY = Random.Range(transform.position.y - config.spawnBoundsMin.y, transform.position.y +config.spawnBoundsMax.y);
 
             // spawn Z position always 0
             Vector3 spawnPosition = new Vector3(spawnX, spawnY, -7);
