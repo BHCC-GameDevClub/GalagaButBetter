@@ -4121,11 +4121,14 @@ MonoBehaviour:
     spawnInterval: 1
     spawnEnemys: 1
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     spawnBoundsMin: {x: -30, y: 0}
     spawnBoundsMax: {x: 30, y: 80}
   - enemyOnePrefab: {fileID: 3324024107681944387, guid: ba3458efe0c1c584a86952b8918100d4, type: 3}
     spawnInterval: 1
     spawnEnemys: 1
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     spawnBoundsMin: {x: -30, y: 0}
