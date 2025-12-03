@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "GalagaButBetter.slnx"
+    "dotnet.defaultSolution": "GalagaButBetter.slnx",
 }
