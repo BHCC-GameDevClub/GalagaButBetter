@@ -10,6 +10,8 @@ public class EnemySpawnConfig
     public float spawnInterval = 3.5f;
     // you will also need a new enemy interval for each enemy prefab
 
+    public bool spawnerOn = true;
+
     [Header("Individual Spawn Area")]
     public Vector2 spawnBoundsMin;
     public Vector2 spawnBoundsMax;
@@ -36,7 +38,7 @@ public class EnemySpawnConfig
 
     private IEnumerator SpawnEnemy(EnemySpawnConfig config)
     {
-        while (true)
+        while (config.spawnerOn)
         {
             // waits for specific enemies interval
             yield return new WaitForSeconds(config.spawnInterval);
