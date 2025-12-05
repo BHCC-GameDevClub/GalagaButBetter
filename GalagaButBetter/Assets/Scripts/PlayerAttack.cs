@@ -27,7 +27,7 @@ public class PlayerAttack : MonoBehaviour
     {
         shootTimer -= Time.deltaTime;
 
-        if (Input.GetButtonDown("Shoot") && shootTimer <= 0)
+        if (Input.GetButton("Shoot") && shootTimer <= 0)
         {
             Shoot();
         }

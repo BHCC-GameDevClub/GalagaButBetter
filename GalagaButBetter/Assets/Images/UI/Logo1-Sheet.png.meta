@@ -1,0 +1,392 @@
+fileFormatVersion: 2
+guid: 35e8adcfbf5ab984ba8b2b9387316b4b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Logo1-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 3129
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 062a864fd4724454c85cdccaf73dd63a
+      internalID: -2054531330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Logo1-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 2159
+        y: 3129
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08343f093bcc59041ba401828ac710fb
+      internalID: -1350106170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Logo1-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 2491
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd65b34db649ea94c821cf9a95639385
+      internalID: 728967825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Logo1-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 2157
+        y: 2486
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b6551d1357fdcf41bcde7e8590a3cd2
+      internalID: 49933910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Logo1-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 1776
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1856baaabbd8c05479daa947b43346a9
+      internalID: -734421410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Logo1-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 2159
+        y: 1779
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce64f496d5cdb7045958a40c171ff2da
+      internalID: 1315693225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Logo1-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 1067
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fa9ed0305930e94cb372d9ec8eda6b8
+      internalID: -450775989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Logo1-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 2159
+        y: 1067
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 472379d0e092aff449fc9ca7d3b9ba95
+      internalID: 1604057283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Logo1-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 2159
+        y: 429
+        width: 1722
+        height: 420
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0e3dccd0dc7a4e4a8ad09cdef01ba9e
+      internalID: 1513763623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 970a9d1b801efba4599e507b37e5eaf2
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":12.0,"y":1.0},"gridSpriteSize":{"x":2048.0,"y":2048.0},"gridSpriteOffset":{"x":2048.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Logo1-Sheet_0: -2054531330
+      Logo1-Sheet_1: 728967825
+      Logo1-Sheet_10: 1571755852
+      Logo1-Sheet_11: -1310201319
+      Logo1-Sheet_12: -2044865944
+      Logo1-Sheet_13: 1996479998
+      Logo1-Sheet_14: 1163578889
+      Logo1-Sheet_15: 1898853132
+      Logo1-Sheet_16: 1686211534
+      Logo1-Sheet_17: 913442544
+      Logo1-Sheet_2: -734421410
+      Logo1-Sheet_20: -1860533379
+      Logo1-Sheet_21: -2060610198
+      Logo1-Sheet_22: 605990712
+      Logo1-Sheet_23: 1071315002
+      Logo1-Sheet_24: -1870276374
+      Logo1-Sheet_25: 1361611493
+      Logo1-Sheet_26: 712997988
+      Logo1-Sheet_27: -1291204212
+      Logo1-Sheet_28: -464221683
+      Logo1-Sheet_29: 118881616
+      Logo1-Sheet_3: -450775989
+      Logo1-Sheet_30: -771742246
+      Logo1-Sheet_31: 1057141507
+      Logo1-Sheet_32: -7481160
+      Logo1-Sheet_33: -1892974523
+      Logo1-Sheet_34: -576816907
+      Logo1-Sheet_35: 1416610197
+      Logo1-Sheet_38: -1771244996
+      Logo1-Sheet_39: -38684211
+      Logo1-Sheet_4: -1350106170
+      Logo1-Sheet_40: -659553418
+      Logo1-Sheet_41: -776266950
+      Logo1-Sheet_42: -348572784
+      Logo1-Sheet_43: -132350496
+      Logo1-Sheet_44: -898855645
+      Logo1-Sheet_45: 1527039531
+      Logo1-Sheet_46: 720833525
+      Logo1-Sheet_47: 774948352
+      Logo1-Sheet_48: -883350837
+      Logo1-Sheet_49: 448930534
+      Logo1-Sheet_5: 49933910
+      Logo1-Sheet_50: 246686032
+      Logo1-Sheet_51: -986641985
+      Logo1-Sheet_52: 1803275202
+      Logo1-Sheet_53: -68204829
+      Logo1-Sheet_56: -2084378872
+      Logo1-Sheet_57: 534013300
+      Logo1-Sheet_58: -425163165
+      Logo1-Sheet_59: 1226221048
+      Logo1-Sheet_6: 1315693225
+      Logo1-Sheet_60: 428754259
+      Logo1-Sheet_61: 1420326429
+      Logo1-Sheet_62: -89730837
+      Logo1-Sheet_63: 1218217773
+      Logo1-Sheet_64: -289459691
+      Logo1-Sheet_65: 2091361452
+      Logo1-Sheet_66: 529740525
+      Logo1-Sheet_67: 1076649516
+      Logo1-Sheet_68: -1662339626
+      Logo1-Sheet_69: 755603639
+      Logo1-Sheet_7: 1604057283
+      Logo1-Sheet_70: 484763999
+      Logo1-Sheet_71: -175294818
+      Logo1-Sheet_74: -1578408314
+      Logo1-Sheet_75: -626165765
+      Logo1-Sheet_76: -1493895191
+      Logo1-Sheet_77: -1684695797
+      Logo1-Sheet_78: -1917079946
+      Logo1-Sheet_79: 727321909
+      Logo1-Sheet_8: 1513763623
+      Logo1-Sheet_80: 1033285381
+      Logo1-Sheet_81: 939432798
+      Logo1-Sheet_83: -1445903677
+      Logo1-Sheet_9: -1081855332
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
-using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,15 +11,15 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     [Header("Constant Movement")]
     public float baseForwardSpeed = 2.5f; // idle speed
-    public float speed = 5f; // speed of character
+    public float speed = 10f; // speed of character
     private Vector2 move; // store input values
-    public bool isPc; // Checks for Gamepad or M&K
 
     // Dash Variabls & Event
     [Header("Dash Settings")]
     public float dashSpeed = 20f;
     public float dashDuration = 0.02f;
     public float dashCooldown = 2f;
+
     [Header("Collision Settings")]
     public LayerMask dashStopLayer;
     private bool isDashing = false;
@@ -29,8 +28,6 @@ public class PlayerController : MonoBehaviour
     // Camera
     [Header("Boundaries")]
     public Camera mainCamera; // Main camera component
-    public float leftBoundaryBuffer = 1.0f; // Left screen limiter
-
 
     public static event Action<bool> OnDashStateChanged;
 
@@ -47,6 +44,11 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(DashCoroutine());
         }
+    }
+
+    public float GetInputXVelocity()
+    {
+        return move.x * speed;
     }
 
     // Start is called before the first frame update
@@ -80,7 +82,7 @@ public class PlayerController : MonoBehaviour
         }
         movePlayer();
 
-    // Left Boundary
+    // Left & Right Boundary
         if (mainCamera != null)
         {
             CapsuleCollider playerCollider = GetComponent<CapsuleCollider>();
@@ -89,16 +91,23 @@ public class PlayerController : MonoBehaviour
                 Debug.LogError("missing CapsuleCollider Component");
                 return;
             }
+            // Player offset
+            float playerHalfWidth = playerCollider.radius;
+            // Camera Dimensions
             float playerZDepth = transform.position.z;
-            Vector3 leftEdgeWorld = mainCamera.ViewportToWorldPoint(new Vector3(0f, 0.5f, playerZDepth));
-            float minPlayerX = leftEdgeWorld.x;
-            float clampedX= Mathf.Max(transform.position.x, minPlayerX);
 
-/*           float cameraHalfHeight = mainCamera.orthographicSize;
-           float cameraHalfWidth = cameraHalfHeight * mainCamera.aspect;
-           float leftCameraEdgeX = mainCamera.transform.position.x - cameraHalfWidth;
-           float minPlayerX = leftCameraEdgeX;
-           float clampedX = Mathf.Max(transform.position.x, minPlayerX); */
+            // World Positions
+            Vector3 leftEdgeWorld = mainCamera.ViewportToWorldPoint(new Vector3(0f, 0.5f, playerZDepth));
+            Vector3 rightEdgeWorld = mainCamera.ViewportToWorldPoint(new Vector3(1f, 0.5f, playerZDepth));
+
+            // Clamping Limits
+            float minPlayerX = leftEdgeWorld.x + playerHalfWidth; // Left edge
+            float maxPlayerX = rightEdgeWorld.x - playerHalfWidth; // right edge
+            // Adding Clamp
+            float clampedX= Mathf.Max(transform.position.x, minPlayerX);
+            clampedX = Mathf.Min(clampedX, maxPlayerX);
+
+            // constrained position
            transform.position = new Vector3(
             clampedX,
             transform.position.y,
@@ -112,8 +121,8 @@ public class PlayerController : MonoBehaviour
     public void movePlayer()  // WASD/LTS input for movement
     {   
         Vector3 inputMovement = new UnityEngine.Vector3(move.x, move.y, 0f) * speed;
-        Vector3 forwardMovement = UnityEngine.Vector3.right * baseForwardSpeed; // constant movement to right
-        Vector3 netDesiredVelocity = forwardMovement + inputMovement;
+        Vector3 constantPush = Vector3.right * baseForwardSpeed;
+        Vector3 netDesiredVelocity = inputMovement + constantPush;
         rb.linearVelocity = netDesiredVelocity;
     }
 
