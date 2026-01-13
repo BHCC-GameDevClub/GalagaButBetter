@@ -136,7 +136,7 @@
                     "name": "",
                     "id": "d0a253f7-6b41-4108-b865-4281e2cd4a36",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "Tap",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Dash",

@@ -11,7 +11,8 @@ public class Enemy_Combat : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.ChangeHealth(damage);
+
+            Destroy(gameObject);
         }
-        //collision.gameObject.GetComponent<PlayerHealth>().ChangeHealth(-damage);
     }
 }

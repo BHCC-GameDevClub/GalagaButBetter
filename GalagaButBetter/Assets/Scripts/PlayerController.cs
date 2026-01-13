@@ -31,6 +31,11 @@ public class PlayerController : MonoBehaviour
 
     public static event Action<bool> OnDashStateChanged;
 
+    // Accessibility
+    [Header("Accessibility")]
+    private float holdTimer = 0f;
+    public bool isHoldingDash = false;
+
     // Movement Input Calls
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -42,7 +47,13 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started && canDash)
         {
-            StartCoroutine(DashCoroutine());
+            isHoldingDash = true;
+            holdTimer = 0f;
+        }
+        if (context.canceled)
+        {
+            isHoldingDash = false;
+            holdTimer = 0f;
         }
     }
 
@@ -64,8 +75,26 @@ public class PlayerController : MonoBehaviour
 
         }
         rb.constraints |= RigidbodyConstraints.FreezeRotation;
-        
+
         OnDashStateChanged?.Invoke(true); // broadcast to UI at start
+    }
+
+    void Update()
+    {
+        if (isHoldingDash && canDash)
+        {
+            holdTimer += Time.deltaTime;
+            float requiredHoldTime = PlayerPrefs.GetFloat("AccessibilityHoldTime", 0.5f);
+
+            Debug.Log($"Holding... {holdTimer:F2} / {requiredHoldTime:F2}");
+
+            if (holdTimer >= requiredHoldTime)
+            {
+                StartCoroutine(DashCoroutine());
+                isHoldingDash = false;
+                holdTimer = 0f;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -82,7 +111,7 @@ public class PlayerController : MonoBehaviour
         }
         movePlayer();
 
-    // Left & Right Boundary
+        // Left & Right Boundary
         if (mainCamera != null)
         {
             CapsuleCollider playerCollider = GetComponent<CapsuleCollider>();
@@ -104,22 +133,22 @@ public class PlayerController : MonoBehaviour
             float minPlayerX = leftEdgeWorld.x + playerHalfWidth; // Left edge
             float maxPlayerX = rightEdgeWorld.x - playerHalfWidth; // right edge
             // Adding Clamp
-            float clampedX= Mathf.Max(transform.position.x, minPlayerX);
+            float clampedX = Mathf.Max(transform.position.x, minPlayerX);
             clampedX = Mathf.Min(clampedX, maxPlayerX);
 
             // constrained position
-           transform.position = new Vector3(
-            clampedX,
-            transform.position.y,
-            transform.position.z
-           );
-        } 
+            transform.position = new Vector3(
+             clampedX,
+             transform.position.y,
+             transform.position.z
+            );
+        }
         // Debug for camera boundary
-         //Debug.Log($"Cam X: {mainCamera.transform.position.x}, Half Width: {cameraHalfWidth}, Min X: {minPlayerX}");
+        //Debug.Log($"Cam X: {mainCamera.transform.position.x}, Half Width: {cameraHalfWidth}, Min X: {minPlayerX}");
     }
 
     public void movePlayer()  // WASD/LTS input for movement
-    {   
+    {
         Vector3 inputMovement = new UnityEngine.Vector3(move.x, move.y, 0f) * speed;
         Vector3 constantPush = Vector3.right * baseForwardSpeed;
         Vector3 netDesiredVelocity = inputMovement + constantPush;
@@ -141,10 +170,10 @@ public class PlayerController : MonoBehaviour
         {
             dashDirection = transform.right; // idle dash where facing
         }
-        
+
         rb.linearVelocity = dashDirection * dashSpeed;
         yield return new WaitForSeconds(dashDuration);
-        
+
         // Dash End & Cooldowns
         isDashing = false;
 
@@ -158,5 +187,5 @@ public class PlayerController : MonoBehaviour
     {
         return move;
     }
-        
+
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemySpawnConfig
 {
     public GameObject enemyOnePrefab;
+    public int maxEnemies = 10;
     // second enemy prefab will go here exactly the same as above along with serializedfield
     public float spawnInterval = 3.5f;
     // you will also need a new enemy interval for each enemy prefab
@@ -16,7 +17,7 @@ public class EnemySpawnConfig
     public Vector2 spawnBoundsMax;
 
 }
- public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : MonoBehaviour
 {
     [Header("Enemy Config")]
     [Tooltip("Add all enemy types here")]
@@ -37,24 +38,39 @@ public class EnemySpawnConfig
 
     private IEnumerator SpawnEnemy(EnemySpawnConfig config)
     {
+        List<GameObject> activeEnemies = new List<GameObject>(); // Tracker
+
         while (config.spawnEnemys)
         {
-            // waits for specific enemies interval
+
+            // Remove Dead Bodies
+            for (int i = activeEnemies.Count - 1; i >= 0; i--)
+            {
+                if (activeEnemies[i] == null) activeEnemies.RemoveAt(i);
+            }
+
+            // Limit Check
+            if (activeEnemies.Count < config.maxEnemies)
+            {
+                // Random Box Calculation
+                float randomOffsetX = Random.Range(config.spawnBoundsMin.x, config.spawnBoundsMax.x);
+                float randomOffsetY = Random.Range(config.spawnBoundsMin.y, config.spawnBoundsMax.y);
+
+                // Offsets
+                Vector3 spawnPosition = transform.position + new Vector3(randomOffsetX, randomOffsetY, 0);
+
+                // Force Z 
+                spawnPosition.z = -7;
+
+                // Spawn
+                GameObject newEnemy = Instantiate(config.enemyOnePrefab, spawnPosition, Quaternion.identity);
+
+                // Add to tracker
+                activeEnemies.Add(newEnemy);
+            }
+
+            //  Buffer Check
             yield return new WaitForSeconds(config.spawnInterval);
-
-            // randomizaed spawn points
-            float spawnX = Random.Range(transform.position.x - config.spawnBoundsMin.x, transform.position.x + config.spawnBoundsMax.x);
-            float spawnY = Random.Range(transform.position.y - config.spawnBoundsMin.y, transform.position.y +config.spawnBoundsMax.y);
-
-            // spawn Z position always 0
-            Vector3 spawnPosition = new Vector3(spawnX, spawnY, -7);
-
-            // no rotation
-            Instantiate(config.enemyOnePrefab, spawnPosition, Quaternion.identity);
-
         }
-/*        yield return new WaitForSeconds(enemyOneInterval);
-        GameObject newEnemy = Instantiate(enemy, new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-6f, 6f)), Quaternion.Euler(new Vector3(90, 0, 0)));
-        StartCoroutine(spawnEnemy(interval, enemy)); */
     }
 }

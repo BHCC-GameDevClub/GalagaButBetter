@@ -5,6 +5,7 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
+    // ============================ Cursor
     [Header("Cursor Animation Settings")]
     public Image arrowImage;
     public float offsetX = -50f;
@@ -12,6 +13,7 @@ public class MainMenu : MonoBehaviour
     public float frameRate = 0.1f;
     private Coroutine arrowAnimationCoroutine;
 
+// ============================ Logo & Background
     [Header("Logo Animation Settings")]
     public Image logoImage;
     public Sprite[] logoFrames = new Sprite[12];
@@ -26,6 +28,9 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        
         if (arrowImage != null)
         {
             arrowAnimationCoroutine = StartCoroutine(AnimateArrow());
@@ -41,18 +46,44 @@ public class MainMenu : MonoBehaviour
             backgroundAnimatedCoroutine = StartCoroutine(AnimateBackground());
         }
     }
-    public void PlayGame() // Called by Start Button
+    
+    // ============================ Play
+        public void PlayGame() // Called by Start Button
     {
+        StopAllAnimations();
+
+        MusicManager musicManager = FindObjectOfType<MusicManager>();
+        if (musicManager != null)
+        {
+            musicManager.StopMusic();
+        }
+
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); // MainMenu index 0, Game 1
     }
 
+// ============================ Options
     public void OpenOptions() // Called by Options Button
     {
-        Debug.Log("Options Coming Soon");
+        StopAllAnimations();
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.LoadOptions(GameManager.OriginScene.MainMenu);
+        }
+        else
+        {
+            Debug.LogError("GameManager instance not found");
+        }
     }
 
+// ============================ Quit
     public void QuitGame() // Called by Quit Button
     {
+        StopAllAnimations();
+
         Debug.Log("Quit");
         Application.Quit();
     }
@@ -71,6 +102,7 @@ public class MainMenu : MonoBehaviour
         arrowImage.gameObject.SetActive(true);
     }
 
+// ============================ Animations
     IEnumerator AnimateArrow()
     {
         int currentIndex = 0;
@@ -113,4 +145,27 @@ public class MainMenu : MonoBehaviour
             currentIndex = (currentIndex + 1) % backgroundFrames.Length;
         }
     }
+
+    // ============================ Clean Up
+    public void StopAllAnimations()
+    {
+        if (arrowAnimationCoroutine != null)
+        {
+            StopCoroutine(arrowAnimationCoroutine);
+            arrowAnimationCoroutine = null;
+        }
+
+        if (logoAnimationCoroutine != null)
+        {
+            StopCoroutine(logoAnimationCoroutine);
+            logoAnimationCoroutine = null;
+        }
+
+        if (backgroundAnimatedCoroutine != null)
+        {
+            StopCoroutine(backgroundAnimatedCoroutine);
+            backgroundAnimatedCoroutine = null;
+        }
+    }
+
 }

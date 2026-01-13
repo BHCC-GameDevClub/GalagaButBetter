@@ -1,60 +1,58 @@
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class HealthDisplay : MonoBehaviour
 {
     [Header("UI Reference")]
-    [Tooltip("The Image component that will change.")]
-    public Image healthImage;
+    [Tooltip("Drag Health Bar Images here:")]
+    public List<Image> healthBarImages;
 
     [Header("Health Sprites")]
-    [Tooltip("Sprite for 4 HP")]
+    [Tooltip("Drag activated health image here")]
     public Sprite fullHealthSprite;
-    [Tooltip("Sprite for 2 HP(1 Dmg)")]
-    public Sprite oneDamageSprite;
-    [Tooltip("SPrite for 1 HP (2 Dmg)")]
-    public Sprite twoDamageSprite;
-    [Tooltip("Sprite for 0 HP")]
-    public Sprite emptyHealthSprite;
+    [Tooltip("Drag depleted health image here")]
+    public Sprite damagedHealthSprite;
 
     private void OnEnable()
     {
-        PlayerHealth.OnHealthChanged += UpdateHealth;
+        PlayerHealth.OnHealthChanged += UpdateHealthVisuals;
     }
 
     private void OnDisable()
     {
-        PlayerHealth.OnHealthChanged -= UpdateHealth;
+        PlayerHealth.OnHealthChanged -= UpdateHealthVisuals;
     }
 
     // HP Event
-    private void UpdateHealth(int currentHealth, int maxHealth)
+    private void UpdateHealthVisuals(int currentHealth, int maxHealth)
     {
-     switch (currentHealth)
-           {
-            case 3:
-                healthImage.sprite = fullHealthSprite;
-                break;
-            case 2:
-                healthImage.sprite = oneDamageSprite;
-                break;
-            case 1:
-                healthImage.sprite = twoDamageSprite;
-                break;
-            case 0:
-                healthImage.sprite = emptyHealthSprite;
-                break;
-            default:
-                if (currentHealth > 3)
-                {
-                    healthImage.sprite = fullHealthSprite;
-                }
-                else
-                {
-                    healthImage.sprite = emptyHealthSprite;
-                }
-                break;
-        }   
+        // Ensure list is populated
+        if (healthBarImages == null || healthBarImages.Count == 0)
+        {
+            Debug.LogError("Health Bar Image List is EMPTY");
+            return;
+        }
+
+    // maxHealth is equal to number of bars but we iterate up to number of bars we have 
+
+     for (int i = 0; i < healthBarImages.Count; i++)
+        {
+            // if current index (+1) is less than or equial to current hp
+            // FULL BAR
+            if (i < currentHealth)
+            {
+                // Full HP
+                healthBarImages[i].sprite = fullHealthSprite;
+                healthBarImages[i].enabled = true; // Bar is visible
+            }
+            else
+            {
+                // Empty HP
+                healthBarImages[i].sprite = damagedHealthSprite;
+                healthBarImages[i].enabled = true; // Still visible but greyed out
+            }
+        }  
     }
 
 }

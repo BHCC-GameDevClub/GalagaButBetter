@@ -1,0 +1,39 @@
+Text List
+
+Paused
+Resume
+Main Menu
+Respawn
+Return
+Apply
+General
+Audio
+Controls
+Accessibility
+Language
+Credits
+Shoutouts
+Graphics
+Resolution
+Fullscreen
+Unlimited
+Master
+Music
+SFX
+Color Swap
+Hold Time
+You have unsaved changes. Are you sure you want to continue?
+Yes
+No
+Movement
+Dash
+Teleport
+Fire
+Start
+Options
+Quit
+Return
+Score
+Off
+Protanopia
+Deuteranopia
